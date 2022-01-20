@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.sigvetl</groupId>
-	<artifactId>twoDog</artifactId>
+	<artifactId>tbrew</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>twoDog</name>
-	<description>TwoDog brewing webpage</description>
+	<name>tbrew</name>
+	<description>tbrew brewing webpage</description>
 	
 	<dependencies>
 		<dependency>
