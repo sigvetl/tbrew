@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="stylesheet" type="text/css" media="all" th:href="@{/css/bootstrap.min.css}">
+
+    <title>Home_unauthorized</title>
+</head>
+<body>
+<div class="container">
+    <div id="logoutDiv">
+        <!-- create div, specify div size, set banner to cover size of div-->
+        <script type="text/javascript">
+                var screenWidth = window.innerWidth;
+                var bannerHeight = (screenWidth / 4.85) + 'px';
+                var bannerWidth = screenWidth + 'px';
+            </script>
+        <div style="width: bannerWidth; height: bannerHeight;">
+            <img src="../../images/banner-png-40212.png" width="100%" height="100%">
+        </div>
+        <form th:action="@{/login}" action="#" method="POST">
+            <button id="login-button" type="submit" class="btn btn-secondary float-right">Login</button>
+        </form>
+        <form th:action="@{/signup}" action="#" method="POST">
+            <button id="signup-button" type="submit" class="btn btn-secondary float-right">Sign Up</button>
+        </form>
+    </div>
+    <div id="contentDiv" style="clear: right;">
+        <nav style="clear: right;">
+            <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                <a class="nav-item nav-link active" id="nav-beers-tab" data-toggle="tab" href="#nav-beers" role="tab" aria-controls="nav-beers" aria-selected="true">Beers</a>
+                <a class="nav-item nav-link" id="nav-batches-tab" data-toggle="tab" href="#nav-batches" role="tab" aria-controls="nav-batches" aria-selected="false">Batches</a>
+            </div>
+        </nav>
+        <div class="tab-content" id="nav-tabContent">
+            <div class="tab-pane fade show active" id="nav-beers" role="tabpanel" aria-labelledby="nav-beers-tab">
+
+                <div class="table-responsive">
+                    <table class="table table-striped" id="userTable">
+                        <thead>
+                        <tr>
+                            <th style="width: 15%" scope="col"></th>
+                            <th style="width: 10%" scope="col"></th>
+                            <th style="width: 10%" scope="col">Name</th>
+                            <th style="width: 10%" scope="col">Type</th>
+                            <th style="width: 5%" scope="col">IBU</th>
+                            <th style="width: 5%" scope="col">OG</th>
+                            <th style="width: 5%" scope="col">FG</th>
+                            <th style="width: 10%" scope="col">ABV</th>
+                            <th style="width: 5%" scope="col">EBC</th>
+                            <th style="width: 5%" scope="col">Recipe</th>
+                            <th style="width: 5%" scope="col">Last Edited By</th>
+                        </tr>
+                        </thead>
+                        <tbody th:each="beer : ${beers}">
+                        <tr>
+                            <td>
+                                <button id="edit-beer" type="button" class="btn btn-success"
+                                        th:onclick="javascript:showBeerModal( [[${beer.getBeerId()}]], [[${beer.getName()}]],
+                                            [[${beer.getType()}]],[[${beer.getIbu()}]], [[${beer.getOg()}]], [[${beer.getFg()}]],
+                                            [[${beer.getAbv()}]], [[${beer.getEbc()}]], [[${beer.getRecipeLink()}]], [[${beer.getPictureLink()}]] )">
+                                    All info
+                                </button>
+                            </td>
+                            <th id="beerLogo" scope="row">
+                                <div style="width: 100px; height: 80px;">
+                                    <img th:src="${beer.pictureLink}" width="100%" height="100%">
+                                </div>
+                            </th>
+                            <th id="beerName" th:text="${beer.name}" scope="row">Example Name</th>
+                            <td id="beerType" th:text="${beer.type}">Example Type</td>
+                            <td id="BeerIbu" th:text="${beer.ibu}" scope="row">Example IBU</td>
+                            <td id="beerOg" th:text="${beer.og}" scope="row">Example OG</td>
+                            <td id="beerFg" th:text="${beer.fg}" scope="row">Example FG</td>
+                            <td id="BeerAbv" th:text="${beer.abv + ' %'}" scope="row">Example ABV</td>
+                            <td id="beerEbc" th:text="${beer.ebc}" scope="row">Example EBC</td>
+
+                            <td id="beerRecipeLink" th:if="${beer.recipeLink}">
+                                <a th:href="${beer.recipeLink}">
+                                    <span th:text="Link"></span>
+                                </a></td>
+                            <td id="beerLastUpdatedBy" th:text="${beer.lastUpdatedBy}">Example Last Updated By</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="modal fade" id="beerModal" tabindex="-1" role="dialog" aria-labelledby="beerModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="beerModalLabel">Beer</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form th:action="@{/beers}" th:object="${beerForm}" method="POST">
+                                    <input th:field="*{beerId}" type="hidden" name="beerId" id="beer-id">
+                                    <div class="form-group">
+                                        <label for="beer-name" class="col-form-label">Name</label>
+                                        <input th:field="*{name}" type="text" name= "name" class="form-control" id="beer-name" maxlength="20" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="beer-type" class="col-form-label">Type</label>
+                                        <input th:field="*{type}" type="text" class="form-control" name="type" id="beer-type" maxlength="20" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="beer-ibu" class="col-form-label">IBU</label>
+                                        <input th:field="*{ibu}" type="number" class="form-control" name="ibu" id="beer-ibu" min="0" max="120" >
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="beer-og" class="col-form-label">Original Gravity</label>
+                                        <input th:field="*{og}" type="number" class="form-control" name="og" id="beer-og" min="1" max="2" step="any" >
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="beer-fg" class="col-form-label">Final Gravity</label>
+                                        <input th:field="*{fg}" type="number" class="form-control" name="fg" id="beer-fg" min="1" max="2" step="any" >
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="beer-abv" class="col-form-label">ABV</label>
+                                        <input th:field="*{abv}" type="number" class="form-control" name="abv" id="beer-abv" min="1" max="15" step="any" >
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="beer-ebc" class="col-form-label">EBC</label>
+                                        <input th:field="*{ebc}" type="number" class="form-control" name="ebc" id="beer-ebc" min="1" max="100" step="any" >
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="beer-recipelink" class="col-form-label">Recipe Link</label>
+                                        <input th:field="*{recipeLink}" type="text" class="form-control" name="recipeLink" id="beer-recipelink" maxlength="100" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="beer-picturelink" class="col-form-label">Picture Link</label>
+                                        <input th:field="*{pictureLink}" type="text" class="form-control" name="pictureLink" id="beer-picturelink" maxlength="200" >
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="nav-batches" role="tabpanel" aria-labelledby="nav-batches-tab">
+
+                <div class="table-responsive">
+                    <table class="table table-striped" th:object="${batches}" id="batchTable">
+                        <thead>
+                        <tr>
+                            <th style="width: 10%" scope="col"></th>
+                            <th style="width: 10%" scope="col"></th>
+                            <th style="width: 5%" scope="col">Beer Name</th>
+                            <th style="width: 5%" scope="col">Beer Type</th>
+                            <th style="width: 5%" scope="col">Brew Date</th>
+                            <th style="width: 5%" scope="col">Tap Date</th>
+                            <th style="width: 5%" scope="col">Volume</th>
+                            <th style="width: 5%" scope="col">Original gravity</th>
+                            <th style="width: 5%" scope="col">Final gravity</th>
+                            <th style="width: 5%" scope="col">Alcohol %</th>
+                            <th style="width: 5%" scope="col">Last Edited By</th>
+                        </tr>
+                        </thead>
+                        <tbody th:each="batch : ${batches}">
+                        <tr>
+                            <td>
+                                <button id="edit-batch" type="button" class="btn btn-success"
+                                        th:onclick="javascript:showBatchModal( [[${batch.getBatchId()}]], [[${batch.getBeerId()}]], [[${batch.getVolume()}]],
+                                            [[${batch.getOg()}]], [[${batch.getFg()}]],[[${batch.getAbv()}]], [[${batch.getBrewDate()}]],
+                                            [[${batch.getTapDate()}]], [[${batch.getQuality()}]], [[${batch.getComments()}]])">
+                                    Full info</button>
+                            </td>
+                            <!-- direct access to variables or use getters? -->
+                            <th id="batchLogo" scope="row">
+                                <div style="width: 80px; height: 100px;">
+                                    <img src="../../images/Logo2.PNG" width="100%" height="100%">
+                                </div>
+                            </th>
+                            <td id="batchBeerName" th:each="beer : ${beers}" th:if="${beer.getBeerId() == batch.getBeerId()}" th:text="${beer.getName()}">Example Beer Name</td>
+                            <td id="batchBeerType" th:each="beer : ${beers}" th:if="${beer.getBeerId() == batch.getBeerId()}" th:text="${beer.getType()}">Example Beer Type</td>
+                            <td id="brewDate" th:text="${batch.getBrewDate()}">Example Brew Date</td>
+                            <td id="tapDate" th:text="${batch.getTapDate() ?: 'TBD'}">Example Tap Date</td>
+                            <td id="volume" th:text="${batch.volume}">Example Volume</td>
+                            <td id="og" th:text="${batch.og}">Example Original Gravity</td>
+                            <td id="fg" th:text="${batch.fg} ?: 'N/A'">Example Final Gravity</td>
+                            <td id="abv" th:text="${batch.abv} ? ${batch.abv + ' %'} : 'N/A'">
+                                Example Alcohol %</td>
+                            <td id="batchLastUpdatedBy" th:text="${batch.lastUpdatedBy}">Example Last Updated By</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="modal fade" id="batchModal" tabindex="-1" role="dialog" aria-labelledby="batchModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="batchModalLabel">Batch</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form th:action="@{/batches}" th:object="${batchForm}" method="POST">
+                                    <input type="hidden" name="batchId" id="batch-id">
+                                    <div class="form-group">
+                                        <label for="batch-beername" class="col-form-label">Beer Name</label>
+                                        <select th:field="*{beerId}" type="number" name="batchBeerName" class="form-control" id="batch-beername" required>
+                                            <option th:each="beer : ${beers}"
+                                                    th:value="${beer.beerId}"
+                                                    th:text="${beer.name}"
+                                                    th:selected="${beerId}"
+                                            ></option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="batch-brewDate" class="col-form-label">Brew Date</label>
+                                        <input th:field="*{brewDate}" type="date" name="brewDate" class="form-control" id="batch-brewDate" placeholder="yyyy-mm-dd" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="batch-tapDate" class="col-form-label">Tap Date</label>
+                                        <input th:field="*{tapDate}" type="date" name= "tapDate" class="form-control" id="batch-tapDate" placeholder="yyyy-mm-dd">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="batch-volume" class="col-form-label">Volume</label>
+                                        <input th:field="*{volume}" type="number" name= "volume" class="form-control" id="batch-volume" max="100" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="batch-og" class="col-form-label">Original Gravity</label>
+                                        <input th:field="*{og}" type="number" step="any" name= "og" class="form-control" id="batch-og" min="1" max="1.08" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="batch-fg" class="col-form-label">Final Gravity</label>
+                                        <input th:field="*{fg}" type="number" step="any" name= "fg" class="form-control" id="batch-fg" min="1" max="1.08">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="batch-abv" class="col-form-label">Alcohol by volume</label>
+                                        <input th:field="*{abv}" type="number" step="any" name= "abv" class="form-control" id="batch-abv" max="2" readonly>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="batch-quality" class="col-form-label">Quality</label>
+                                        <select th:field="*{quality}" name= "quality" class="form-control" id="batch-quality" >
+                                            <option value="Good">Good</option>
+                                            <option value="Average">Average</option>
+                                            <option value="Bad">Bad</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="batch-comments" class="col-form-label">Comments</label>
+                                        <textarea th:field="*{comments}" name= "comments" class="form-control" id="batch-comments" rows="5" maxlength="1000"></textarea>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script th:src="@{/js/jquery-slim.min.js}"></script>
+<script th:src="@{/js/popper.min.js}"></script>
+<script th:src="@{/js/bootstrap.min.js}"></script>
+
+<script type="text/javascript">
+        // For opening beer modal
+        function showBeerModal(beerId, name, type, ibu, og, fg, abv, ebc, recipeLink, pictureLink) {
+            $('#beer-id').val(beerId ? beerId : '');
+            $('#beer-name').val(name ? name : '');
+            $('#beer-type').val(type ? type : '');
+            $('#beer-ibu').val(ibu ? ibu : '');
+            $('#beer-og').val(og ? og : '');
+            $('#beer-fg').val(fg ? fg : '');
+            $('#beer-abv').val(abv ? abv : '');
+            $('#beer-ebc').val(ebc ? ebc : '');
+            $('#beer-recipelink').val(recipeLink ? recipeLink : '');
+            $('#beer-picturelink').val(pictureLink ? pictureLink : '');
+            $('#beerModal').modal('show');
+        }
+
+        // For opening batch modal
+        function showBatchModal(batchId, beerId, volume, og, fg, abv, brewDate, tapDate, quality ,comments) {
+            $('#batch-id').val(batchId ? batchId : '');
+            $('#batch-beerid').val(beerId ? beerId : '');
+            $('#batch-brewDate').val(brewDate ? brewDate : '');
+            $('#batch-tapDate').val(tapDate ? tapDate : '');
+            $('#batch-volume').val(volume ? volume : '');
+            $('#batch-og').val(og ? og : '');
+            $('#batch-fg').val(fg ? fg : '');
+            $('#batch-abv').val(abv ? abv : '');
+            $('#batch-quality').val(quality ? quality : '');
+            $('#batch-comments').val(comments ? comments : '');
+            $('#batchModal').modal('show');
+        }
+    </script>
+</body>
+</html>
