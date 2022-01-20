@@ -1,6 +1,6 @@
-https://two-dog.herokuapp.com/ <br><br>
+https://tbrew.herokuapp.com/ <br><br>
 
-Authenticated web page for Two Dog Brewery using the Spring Boot framework. <br>
+Authenticated web page for TBrew Brewery using the Spring Boot framework. <br>
 MVC-architecture using Mybatis mappers and a Postgres database. <br>
 View is static with use of html-templates with thymeleaf. <br>
 The beer table is populated using a web-scraping script that scrapes all-grain brew packages from bryggselv.no available as an endpoint. <br>
