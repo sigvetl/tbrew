@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project version="4">
-  <component name="JpbDataSourceConfig">
-    <data-sources>
-      <data-source id="4d220e39-52a7-4ed9-898d-5226a50ad208" name="tbrew" url="jdbc:postgresql://ec2-52-51-155-48.eu-west-1.compute.amazonaws.com:5432/d37igiub7aimhm" driverClass="org.postgresql.Driver" />
-    </data-sources>
-  </component>
-</project>
