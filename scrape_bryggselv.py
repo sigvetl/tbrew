@@ -81,6 +81,7 @@ def get_data(links):
         info = re.sub("~|%|\+", "", str(info))
         info = re.sub(",", ".", info)
         infolist = str(info).split()
+        print(infolist) 
 
         og = infolist[1].split("-")
         og = avg_value_og_fg(og, float) if len(og) == 2 else float(og[0])
@@ -95,7 +96,7 @@ def get_data(links):
         fg = avg_value_og_fg(fg, float) if len(fg) == 2 else float(fg[0])
 
         ebc = infolist[12].split("-")
-        ebc = avg_value_abv_ibu_ebc(ebc, float) if len(ebc) == 2 else float(infolist[12])
+        ebc = avg_value_abv_ibu_ebc(ebc, float) if len(ebc) == 2 else 0 if ebc[0] == "</strong>" else float(infolist[12])
         #print(infolist)
 
 
@@ -144,7 +145,7 @@ def get_data1(url):
     fg = avg_value_og_fg(fg, float) if len(fg) == 2 else float(fg[0])
 
     ebc = infolist[12].split("-")
-    ebc = avg_value_abv_ibu_ebc(ebc, float) if len(ebc) == 2 else float(infolist[12])
+    ebc = avg_value_abv_ibu_ebc(ebc, float) if len(ebc) == 2 else 0 if ebc == "'</strong>'" else float(infolist[12])
     #print(infolist)
 
     print("inserting beer " + tittel)
@@ -198,7 +199,7 @@ if __name__ == "__main__":
     #beer_list = scrape_objects(links)
     #print(beer_list)
     #last link does not contain beer info
-    beer_list = get_data(links[:-1])
+    beer_list = get_data(links[:-3])
     json_objects = create_json(beer_list)
 
     app.run(debug=True)
