@@ -8,6 +8,7 @@ The beer table is populated using a web-scraping script that scrapes all-grain b
 Dependencies: <br>
 &nbsp;&nbsp;&nbsp;&nbsp;  pip install bs4 <br>
 &nbsp;&nbsp;&nbsp;&nbsp;  pip install flask <br>
+&nbsp;&nbsp;&nbsp;&nbsp;  pip install requests <br>
 &nbsp;&nbsp;&nbsp;&nbsp;  sdk install maven <br>
 
  
