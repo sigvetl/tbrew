@@ -199,6 +199,7 @@ if __name__ == "__main__":
     #beer_list = scrape_objects(links)
     #print(beer_list)
     #last link does not contain beer info
+    #third last element is not equal to the rest. drop the three last ones
     beer_list = get_data(links[:-3])
     json_objects = create_json(beer_list)
 
